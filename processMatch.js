@@ -132,17 +132,17 @@ const process501Leg = (leg, match_id) => {
   const turnScores = [{}, {}];
   const busts = [0, 0];
   const bogons = [0, 0];
-  const checkoutTranches = [{}, {}];
+  const checkoutChances = [{}, {}];
   const checkouts = [{}, {}];
 
   leg.turns.forEach((turn, idx) => {
     const thrower = (leg.firstThrow + idx) % 2;
+    const startScore = points[thrower];
     darts[thrower] += 3;
     visits[thrower] += 1;
 
-    const tranche = checkoutTranche(points[thrower]);
-    if (tranche) {
-      checkoutTranches[thrower][tranche] = (checkoutTranches[thrower][tranche] || 0) + 1;
+    if (startScore <= 170 && isBogon(startScore) === false) {
+      checkoutChances[thrower][startScore] = (checkoutChances[thrower][startScore] || 0) + 1;
     }
 
     if (turn === "X") {
@@ -179,7 +179,7 @@ const process501Leg = (leg, match_id) => {
     turnScores: turnScores[idx],
     busts: busts[idx],
     bogons: bogons[idx],
-    checkoutTranches: checkoutTranches[idx],
+    checkoutChances: checkoutChances[idx],
     checkouts: checkouts[idx],
     firstThrow: leg.firstThrow === idx ? 1 : 0,
     winner: leg.winner === idx ? 1 : 0,
